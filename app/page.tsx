@@ -9,7 +9,7 @@ const Home=async()=>{
 
   const data = await caller.getUsers();
   
-  return <div className="min-h-screen min-w-screen flex justify-center items-center flex-col gap-y-6">
+  return <div className="min-h-screen min-w-sc flex justify-center items-center flex-col gap-6">
     <h1>
       protected server session
     </h1>

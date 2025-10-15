@@ -80,13 +80,16 @@ export function RegisterFrom(){
                             <div className="grid gap-6">
                                 <div className="flex flex-col gap-4">
                                     <Button variant={"outline"} className="w-full" type="button" disabled={isPending} >
+                                        <Image alt="Github" src="/logo/github.svg" width={20} height={20}/>
                                         Continue With Github
                                     </Button>
                                     <Button variant={"outline"} className="w-full" type="button" disabled={isPending} >
+                                    <Image alt="Google" src="/logo/google.svg" width={20} height={20}/>
                                         Continue With Google
                                     </Button>
                                     <Button variant={"outline"} className="w-full" type="button" disabled={isPending} >
-                                        Continue With X
+                                    <Image alt="Twitter" src="/logo/x.svg" width={20} height={20}/>
+                                        Continue With Twitter
                                     </Button>
                                 </div>
                                 <div className="grid gap-6">
