@@ -4,6 +4,8 @@ import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { generateText } from "ai";
 import { createOpenAI } from '@ai-sdk/openai';
 import { createAnthropic } from '@ai-sdk/anthropic';
+import * as Sentry from "@sentry/nextjs";
+
 
 
 const google = createGoogleGenerativeAI();
@@ -19,13 +21,21 @@ export const execute = inngest.createFunction(
 
         await step.sleep('pretend','5s')
 
+        Sentry.logger.info('User triggered test log', { log_source: 'sentry_test' })
+
+
         const {steps : geminiSteps } = await step.ai.wrap(
             'generate-gemini-text',
             generateText,
             {
                 model : google('gemini-2.5-flash'),
                 system : 'You are a helpful assistant',
-                prompt : 'what is sum of 2+2?'
+                prompt : 'what is sum of 2+2?',
+                experimental_telemetry: {
+                    isEnabled: true,
+                    recordInputs: true,
+                    recordOutputs: true,
+                },
             }
         )
 
@@ -35,7 +45,12 @@ export const execute = inngest.createFunction(
             {
                 model : openai('gpt-4'),
                 system : 'You are a helpful assistant',
-                prompt : 'what is sum of 2+2?'
+                prompt : 'what is sum of 2+2?',
+                experimental_telemetry: {
+                    isEnabled: true,
+                    recordInputs: true,
+                    recordOutputs: true,
+                },
             }
         )
 
@@ -43,9 +58,14 @@ export const execute = inngest.createFunction(
             'generate-anthropic-text',
             generateText,
             {
-                model : anthropic('claude-sonnet-4-5'),
+                model : anthropic('claude-sonnet-4-5-20250929'),
                 system : 'You are a helpful assistant',
-                prompt : 'what is sum of 2+2?'
+                prompt : 'what is sum of 2+2?',
+                experimental_telemetry: {
+                    isEnabled: true,
+                    recordInputs: true,
+                    recordOutputs: true,
+                },
             }
         )
 

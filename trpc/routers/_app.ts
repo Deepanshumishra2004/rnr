@@ -17,6 +17,7 @@ export const appRouter = createTRPCRouter({
   getWorkflow : ProtectedProcedure.query(({ ctx }) => {
     return prisma.workflow.findMany()
   }),
+
   createWorkflow : ProtectedProcedure.mutation(async() => {
       await inngest.send({
         name : "test/hello.world",
@@ -26,6 +27,7 @@ export const appRouter = createTRPCRouter({
       });
       return { success:true , messsage : 'job queued' }
   })
+
 });
 // export type definition of API
-export type AppRouter = typeof appRouter; 
+export type AppRouter = typeof appRouter;
