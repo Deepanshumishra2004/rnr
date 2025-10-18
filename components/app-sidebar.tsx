@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import { useSubscriptionStatus } from "@/features/subscriptions/use-subcription";
 
 
 const menuItems = [
@@ -37,21 +38,46 @@ export const AppSidebar=()=>{
 
     const router = useRouter();
     const pathname = usePathname();
+    const { hasActiveSubscription, isLoading, plan } = useSubscriptionStatus();
+
+    function Subscription(){
+        if (isLoading) {
+            return (
+              <SidebarMenuItem>
+                <SidebarMenuButton disabled className="gap-x-4 h-10 px-4 opacity-50">
+                  <StarIcon className="h-4 w-4 animate-pulse" />
+                  <span>Loading...</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            );
+        }
+        if(hasActiveSubscription) return null;
+
+        return (
+            <SidebarMenuItem>
+                <SidebarMenuButton tooltip='Update to Pro' className="gap-x-4 h-10 px-4" onClick={()=>authClient.checkout({slug : 'rnr-Pro'})}>
+                    <StarIcon className="h-4 w-4"/>
+                    <span>Update to Pro</span>
+                </SidebarMenuButton>
+            </SidebarMenuItem>
+        )
+    }
 
     return (
             <Sidebar collapsible="icon">
                     <SidebarHeader>
                         <SidebarMenuItem>
-                            <SidebarMenuButton asChild className="gap-x-4 h-10 px-4">
+                            <SidebarMenuButton asChild className="gap-x-3 h-10 px-4 flex items-center">
                                 <Link href='/   ' prefetch>
-                                <Image alt='rnr' src='/Logo/company.svg' width={100} height={30}/>
+                                <Image alt='rnr' src='/Logo/companylogo.svg' width={40} height={40}/>
+                                <span className="text-xl flex items-center text-neutral-800">rnr</span>
                                 </Link>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                     </SidebarHeader>
                 <SidebarContent>
                 {menuItems.map((group)=>(
-                    <SidebarGroup>
+                    <SidebarGroup key={group.title}>
                         <SidebarGroupContent>
                             <SidebarMenu>
                                 {group.items.map((items)=>(
@@ -78,12 +104,9 @@ export const AppSidebar=()=>{
             </SidebarContent>
             <SidebarFooter>
                 <SidebarMenu>
-                    <SidebarMenuItem>
-                        <SidebarMenuButton tooltip='Update to Pro' className="gap-x-4 h-10 px-4" onClick={()=>{}}>
-                            <StarIcon className="h-4 w-4"/>
-                            <span>Update to Pro</span>
-                        </SidebarMenuButton>
-                        <SidebarMenuButton tooltip='Billing Portal' className="gap-x-4 h-10 px-4" onClick={()=>{}}>
+                        <Subscription/>
+                        <SidebarMenuItem>
+                        <SidebarMenuButton tooltip='Billing Portal' className="gap-x-4 h-10 px-4" onClick={()=>authClient.customer.portal()}>
                             <CreditCardIcon className="h-4 w-4"/>
                             <span>Billing Portal</span>
                         </SidebarMenuButton>

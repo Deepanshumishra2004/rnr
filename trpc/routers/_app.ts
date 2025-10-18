@@ -1,12 +1,12 @@
 import { inngest } from '@/inngest/client';
-import { baseProcedure, createTRPCRouter, ProtectedProcedure } from '../init';
+import { baseProcedure, createTRPCRouter, preminumProcedure, ProtectedProcedure } from '../init';
 import prisma from '@/lib/db';
 import { google } from "@ai-sdk/google";
 import { generateText } from 'ai';
 
 export const appRouter = createTRPCRouter({
 
-  textAi: baseProcedure.mutation(async()=>{
+  textAi: preminumProcedure.mutation(async()=>{
     await inngest.send({
       name : 'execute/ai'
     })
