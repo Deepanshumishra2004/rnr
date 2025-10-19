@@ -1,3 +1,4 @@
+import { PAGINATION } from "@/config/constants";
 import prisma from "@/lib/db";
 import { createTRPCRouter, preminumProcedure, ProtectedProcedure } from "@/trpc/init";
 import { generateSlug } from 'random-word-slugs';
@@ -54,11 +55,55 @@ export const workflowsRouter = createTRPCRouter({
     }),
 
     getMany : ProtectedProcedure
-    .query(({ ctx })=>{
-        return prisma.workflow.findMany({
-            where : {
-                userId : ctx.auth.user.id
-            }
+    .input(
+        z.object({
+            page : z.number().default(PAGINATION.DEFAULT_PAGE),
+            pageSize : z.number().min(PAGINATION.DEFAULT_MIN_SIZE).max(PAGINATION.DEFAULT_MAX_SIZE).default(PAGINATION.DEFAULT_PAGE_SIZE),
+            search : z.string().default('')
         })
+    )
+    .query(async({ ctx, input })=>{
+
+        const { page, pageSize, search } = input;
+        const [items, totalCount]= await Promise.all([
+            prisma.workflow.findMany({
+                skip : (page -1)*pageSize,
+                take : pageSize,
+                where : {
+                    userId : ctx.auth.user.id,
+                    name : {
+                        contains : search,
+                        mode : 'insensitive'
+                    }
+                },
+                orderBy:{
+                    updatedAt : 'desc'
+                }
+            }),
+            prisma.workflow.count({
+                where : {
+                    userId : ctx.auth.user.id,
+                    name : {
+                        contains : search,
+                        mode : 'insensitive'
+                    }
+                },
+           })
+        ])
+
+        const totalPages = Math.ceil(totalCount/pageSize); 
+        const hasNextPage = page < totalPages;
+        const hasPreviousPage = page > 1;
+
+        return {
+            page,
+            pageSize,
+            search,
+            items,
+            totalCount,
+            totalPages,
+            hasNextPage,
+            hasPreviousPage
+        }
     })
 })
