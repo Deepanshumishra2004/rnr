@@ -1,6 +1,6 @@
 'use client';
 
-import { CreditCardIcon, FolderOpenIcon, LogOutIcon, StarIcon } from "lucide-react";
+import { CreditCardIcon, FolderOpenIcon, Loader2Icon, LogOutIcon, StarIcon } from "lucide-react";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar";
 import Link from "next/link";
 import Image from "next/image";
@@ -45,7 +45,7 @@ export const AppSidebar=()=>{
             return (
               <SidebarMenuItem>
                 <SidebarMenuButton disabled className="gap-x-4 h-10 px-4 opacity-50">
-                  <StarIcon className="h-4 w-4 animate-pulse" />
+                  <Loader2Icon className="h-4 w-4 animate-spin" />
                   <span>Loading...</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
