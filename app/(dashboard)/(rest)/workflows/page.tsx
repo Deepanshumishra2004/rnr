@@ -1,4 +1,4 @@
-import { prefetchWorkflows } from "@/features/workflows/server/prefetch";
+import { prefetchWorkflow } from "@/features/workflows/server/prefetch";
 import { requireAuth } from "@/lib/auth-untils";
 import { HydrateClient } from "@/trpc/server";
 import { ErrorBoundary } from "react-error-boundary";
@@ -21,7 +21,7 @@ const Page =async({searchParams}:Props)=>{
     await requireAuth();
 
     const params = await workflowsParamsLoader(searchParams);
-    prefetchWorkflows(params);
+    prefetchWorkflow(params);
 
     return (
         <WorkflowContainer>
