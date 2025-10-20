@@ -148,11 +148,15 @@ export const WorkflowItem=({data}:{data : Workflow})=>{
         href={`workflows/${data.id}`}
         title={data.name}
         subtitle={
-        <>
-        updated TODO {formatDistanceToNow(data.updatedAt, {addSuffix : true})}{" "}
-        &bull; Created{" "}
-        {formatDistanceToNow(data.createdAt, {addSuffix : true})}
-        </>
+        <div className="gap-x-4 flex justify-between min-w-full">
+            <p>
+            updated TODO {formatDistanceToNow(data.updatedAt, {addSuffix : true})}{" "}
+            </p>
+            <p>
+                &bull; Created{" "}
+                {formatDistanceToNow(data.createdAt, {addSuffix : true})}
+            </p>
+        </div>
         }
         image={
             <div className="size-8 flex items-center justify-center">
