@@ -6,7 +6,7 @@ import { generateSlug } from 'random-word-slugs';
 import z from "zod";
 import { Node, Edge } from "@xyflow/react";
 
-export const workflowsRouter = createTRPCRouter({
+export const WorkflowsRouter = createTRPCRouter({
 
     create : preminumProcedure
     .mutation(({ctx})=>{
