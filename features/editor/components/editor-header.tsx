@@ -9,7 +9,7 @@ import { SaveIcon } from "lucide-react"
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
-export const EditorSaveButton=({workflowId}:{workflowId: string})=>{
+export const EditorSaveButton=( {workflowId}:{workflowId: string} )=>{
     return (
         <div className="ml-auto">
             <Button size={'sm'} onClick={()=>{}} disabled={false}>
@@ -20,13 +20,12 @@ export const EditorSaveButton=({workflowId}:{workflowId: string})=>{
     )
 }
 
-export const EditorNameInput=({workflowId}:{workflowId : string})=>{
+export const EditorNameInput=( {workflowId}:{workflowId : string} )=>{
     const { data : workflow } = useSuspenseWorkflow(workflowId);
-    const [name , setName]=useState(workflow?.name);
-    const [isEditing, setIsEditing]=useState(false);
     const   inputRef = useRef<HTMLInputElement>(null);
     const updateWorkflow = useUpdateWorkflowName();
-
+    const [isEditing, setIsEditing]=useState(false);
+    const [name , setName]=useState(workflow?.name);
 
     useEffect(()=>{
         if(workflow?.name){
